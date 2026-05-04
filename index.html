@@ -686,6 +686,84 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
   .panel{padding:24px 20px}
   .funnel{padding:0 12px 80px}
 }
+
+/* ── Risk section label ── */
+.risk-section-label{
+  font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);
+  margin:0 0 12px;display:flex;align-items:center;gap:8px;
+}
+.risk-new-badge{
+  font-size:9px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 8px;border-radius:10px;
+  background:rgba(146,205,236,.15);
+  border:1px solid rgba(146,205,236,.3);
+  color:var(--accent);
+}
+/* ── Warning strip ── */
+.astrip.warn{
+  background:rgba(245,158,11,.07);
+  border:1px solid rgba(245,158,11,.22);
+  color:#a0a0a0;
+}
+.astrip.warn strong{color:#f59e0b;}
+
+/* ── Risk map rows ── */
+.risk-row{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  transition:border-color .2s;
+}
+.risk-row.high{border-left:3px solid #ef4444;}
+.risk-row.med{border-left:3px solid #f59e0b;}
+.risk-row.low{border-left:3px solid #10b981;}
+.risk-row-icon{
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.risk-row.high .risk-row-icon{background:rgba(239,68,68,.1);}
+.risk-row.med  .risk-row-icon{background:rgba(245,158,11,.1);}
+.risk-row.low  .risk-row-icon{background:rgba(16,185,129,.1);}
+.risk-row-body{flex:1}
+.risk-row-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;display:flex;align-items:center;gap:8px;}
+.risk-pill{
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.risk-pill.high{background:rgba(239,68,68,.15);color:#f87171;}
+.risk-pill.med{background:rgba(245,158,11,.15);color:#fbbf24;}
+.risk-pill.low{background:rgba(16,185,129,.15);color:#34d399;}
+.risk-row-body p{font-size:12px;color:var(--muted);line-height:1.6;margin:0;}
+.risk-row-fix{
+  font-size:11px;font-weight:600;color:var(--accent);
+  margin-top:5px;display:flex;align-items:center;gap:5px;
+}
+
+/* ── Doc needed rows ── */
+.doc-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  font-size:13px;
+}
+.doc-row-icon{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(146,205,236,.1);
+}
+.doc-row-name{font-weight:600;color:#fff;flex:1}
+.doc-row-reg{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;
+  background:rgba(146,205,236,.1);color:var(--accent);}
+.doc-row-required{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;
+  background:rgba(239,68,68,.1);color:#f87171;}
+
+.astrip.ok{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);color:var(--muted)}
 </style>
 </head>
 <body>
@@ -750,8 +828,10 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
   <!-- ════ STEP 1: RISK CHECK ════ -->
   <div class="panel active" id="panel1">
     <div class="ptitle">Quick Risk Check</div>
-    <div class="psub">5 questions · ~2 minutes · No legal knowledge needed. We work out which laws apply to your business.</div>
+    <div class="psub">Answer 8 quick questions. We'll tell you which laws apply, which documents you need, <em>and where your data is exposed right now</em> — before you even open the form.</div>
 
+    <!-- Section A: Business basics -->
+    <div class="risk-section-label">About Your Business</div>
     <div class="fgrid">
       <div class="fg">
         <label>Where is your business based?</label>
@@ -790,6 +870,8 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
       </div>
     </div>
 
+    <!-- Section B: Data you collect -->
+    <div class="risk-section-label" style="margin-top:8px">Your Data</div>
     <div class="fgrid">
       <div class="fg">
         <label>Do you collect personal data?</label>
@@ -813,10 +895,34 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
       </div>
     </div>
 
+    <div class="fg">
+      <label>Where do you <strong>store</strong> customer / employee data? <span style="font-weight:400;color:var(--muted);font-size:12px;">(select all that apply)</span></label>
+      <div class="cb-grid" id="storage-grid">
+        <label class="cb-item"><input type="checkbox" id="ds-gdrive"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Google Drive / Docs</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-onedrive"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>OneDrive / SharePoint</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-crm"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>CRM (HubSpot, Salesforce…)</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-email"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Email (Gmail, Outlook)</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-sheets"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Spreadsheets (Excel, Sheets)</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-pos"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>POS / Payment system</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-cloud"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Cloud database (AWS, Azure…)</span></label>
+        <label class="cb-item"><input type="checkbox" id="ds-local"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Local devices / hard drives</span></label>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Who can access your customer data? <span style="font-weight:400;color:var(--muted);font-size:12px;">(select all that apply)</span></label>
+      <div class="cb-grid">
+        <label class="cb-item"><input type="checkbox" id="ac-all"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Everyone on the team</span></label>
+        <label class="cb-item"><input type="checkbox" id="ac-roles"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Specific roles only</span></label>
+        <label class="cb-item"><input type="checkbox" id="ac-3p"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Third-party vendors / contractors</span></label>
+        <label class="cb-item"><input type="checkbox" id="ac-unsure"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Not sure / uncontrolled</span></label>
+      </div>
+    </div>
+
     <div class="step-nav">
-      <span style="font-size:13px;color:var(--muted)">Step 1 of 4 · Under 2 minutes</span>
+      <span style="font-size:13px;color:var(--muted)">Step 1 of 5 · Under 3 minutes</span>
       <button class="btn" type="button" id="btn-s1">
-        See My Applicable Laws
+        See My Risk Profile
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </div>
@@ -824,17 +930,34 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
 
   <!-- ════ STEP 2: REGULATIONS ════ -->
   <div class="panel" id="panel2">
-    <div class="ptitle">Your Applicable Laws</div>
-    <div class="psub" id="reg-intro">Based on your answers, these regulations apply to your business. Select the ones you want to get compliant with today.</div>
+    <div class="ptitle">Your Risk Profile</div>
+    <div class="psub" id="reg-intro">Based on your answers, here's what applies to your business — including where your data is sitting right now.</div>
 
+    <!-- Applicable laws -->
+    <div class="risk-section-label">Applicable Regulations</div>
     <div class="reg-grid">
       <div class="reg-card" id="rc-popia"><div class="chk">✓</div><div class="reg-name">POPIA</div><div class="reg-sub">Protection of Personal Information Act · SA</div><div class="reg-body">Required for any business handling personal data of South African residents.</div><span class="reg-badge yes" id="rb-popia">Detected</span></div>
-      <div class="reg-card" id="rc-gdpr"><div class="chk">✓</div><div class="reg-name">GDPR</div><div class="reg-sub">General Data Protection Regulation · EU &amp; UK</div><div class="reg-body">Applies if you have any EU or UK customers regardless of where you're based.</div><span class="reg-badge maybe" id="rb-gdpr">Optional</span></div>
+      <div class="reg-card" id="rc-gdpr"><div class="chk">✓</div><div class="reg-name">GDPR</div><div class="reg-sub">General Data Protection Regulation · EU &amp; UK</div><div class="reg-body">Applies if you have any EU or UK customers regardless of where you are based.</div><span class="reg-badge maybe" id="rb-gdpr">Optional</span></div>
       <div class="reg-card" id="rc-ccpa"><div class="chk">✓</div><div class="reg-name">CCPA</div><div class="reg-sub">California Consumer Privacy Act · USA</div><div class="reg-body">Applies if you serve California residents. CCPA 2026 now fully in force.</div><span class="reg-badge maybe" id="rb-ccpa">Optional</span></div>
       <div class="reg-card" id="rc-hipaa"><div class="chk">✓</div><div class="reg-name">HIPAA</div><div class="reg-sub">Health Insurance Portability Act · US Healthcare</div><div class="reg-body">Required if you handle Protected Health Information (PHI).</div><span class="reg-badge maybe" id="rb-hipaa">Optional</span></div>
     </div>
 
-    <div class="astrip info">
+    <!-- Documents you likely need -->
+    <div class="risk-section-label" style="margin-top:24px">Documents You Likely Need</div>
+    <div id="docs-needed-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;"></div>
+
+    <!-- DATA RISK MAP -->
+    <div class="risk-section-label" style="margin-top:24px">
+      Your Data Risk Map
+      <span class="risk-new-badge">New</span>
+    </div>
+    <div class="astrip warn" style="margin-bottom:14px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Most SMEs do not know where their sensitive data lives. Fines often come from <strong>unknown exposure</strong> — not missing documents.</span>
+    </div>
+    <div id="data-risk-map" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;"></div>
+
+    <div class="astrip info" style="margin-top:4px">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Select any regulation you want to cover — even if not detected. Useful if you plan to expand internationally.</span>
     </div>
@@ -2902,8 +3025,26 @@ if(el_btn_s1) el_btn_s1.addEventListener('click',function(){
   if(document.getElementById('c-us').checked)    S.customers.push('US');
   if(document.getElementById('c-other').checked) S.customers.push('Other');
   window._S_customers = S.customers.join(', ');
+  // Collect new data storage selections
+  S.storage = [];
+  if(document.getElementById('ds-gdrive').checked)   S.storage.push('Google Drive');
+  if(document.getElementById('ds-onedrive').checked) S.storage.push('OneDrive/SharePoint');
+  if(document.getElementById('ds-crm').checked)      S.storage.push('CRM');
+  if(document.getElementById('ds-email').checked)    S.storage.push('Email');
+  if(document.getElementById('ds-sheets').checked)   S.storage.push('Spreadsheets');
+  if(document.getElementById('ds-pos').checked)      S.storage.push('POS/Payment');
+  if(document.getElementById('ds-cloud').checked)    S.storage.push('Cloud DB');
+  if(document.getElementById('ds-local').checked)    S.storage.push('Local devices');
+  // Collect access control selections
+  S.access = [];
+  if(document.getElementById('ac-all').checked)    S.access.push('everyone');
+  if(document.getElementById('ac-roles').checked)  S.access.push('roles');
+  if(document.getElementById('ac-3p').checked)     S.access.push('third-party');
+  if(document.getElementById('ac-unsure').checked) S.access.push('unsure');
   if(!S.country||!S.type||!S.data){ alert('Please answer all questions to continue.'); return; }
   buildRegGrid();
+  buildDataRiskMap();
+  buildDocsNeededList();
   showPanel(2);
 });
 var el_btn_s2_back = document.getElementById('btn-s2-back');
@@ -2943,12 +3084,11 @@ function buildRegGrid(){
   document.getElementById('reg-intro').textContent = n>0
     ? n+' regulation'+(n>1?'s':'')+' detected for your business. Add others if expanding internationally.'
     : 'No regulations auto-detected. Select any that apply to your plans.';
-  /* Pre-fill the form regulations select */
+  /* Reset regulations dropdown to blank — user selects it themselves in Step 3 */
   var regEl = document.getElementById('regulations');
-  if(regEl && S.regs.length>0){
-    var map={popia:'POPIA',gdpr:'GDPR',ccpa:'CCPA',hipaa:'HIPAA'};
-    if(S.regs.length===1) regEl.value=map[S.regs[0]]||'';
-    else regEl.value='Multiple / Global';
+  if(regEl){
+    regEl.value = '';
+    regEl.dispatchEvent(new Event('change',{bubbles:true}));
   }
 }
 ['popia','gdpr','ccpa','hipaa'].forEach(function(k){
@@ -3185,6 +3325,201 @@ if(el_btn_s4_confirm) el_btn_s4_confirm.addEventListener('click',function(){
   },3600);
 });
 
+
+/* ════ DATA RISK MAP ════ */
+function buildDataRiskMap(){
+  var el = document.getElementById('data-risk-map');
+  if(!el) return;
+
+  var risks = [];
+
+  /* ── Storage-based risks ── */
+  var storageRisks = {
+    'Google Drive': {
+      level:'med',
+      title:'Google Drive — Shared folder exposure',
+      body:'Google Drive files shared with "Anyone with link" are publicly accessible. Former employees may still have access to folders they were never removed from.',
+      fix:'Audit sharing settings. Remove ex-employee access. Enable Drive audit logs.'
+    },
+    'OneDrive/SharePoint': {
+      level:'high',
+      title:'OneDrive / SharePoint — Inherited permissions',
+      body:'SharePoint uses inherited permissions — one misconfigured parent folder can silently expose all subfolders containing PII to the entire organisation.',
+      fix:'Run a permissions audit. Restrict access by role. Enable sensitivity labels.'
+    },
+    'Spreadsheets': {
+      level:'high',
+      title:'Spreadsheets — Uncontrolled PII copies',
+      body:'Customer or employee data exported to Excel/Sheets becomes an untracked copy. These files are often emailed, stored locally, or forgotten in shared drives.',
+      fix:'Restrict data exports. Use your CRM/database as the single source of truth.'
+    },
+    'Email': {
+      level:'med',
+      title:'Email — PII in inboxes and attachments',
+      body:'Customer data sent via email (quotes, invoices, onboarding forms) creates unstructured PII sitting in mailboxes with no retention policy.',
+      fix:'Define an email retention policy. Avoid sending raw PII via email.'
+    },
+    'CRM': {
+      level:'low',
+      title:'CRM — Third-party data processor',
+      body:'Your CRM is a data processor under POPIA/GDPR. You need a signed Data Processing Agreement (DPA) and must confirm they are GDPR/POPIA compliant.',
+      fix:'Get a DPA in place with your CRM provider. Confirm their compliance status.'
+    },
+    'Local devices': {
+      level:'high',
+      title:'Local devices — Unencrypted endpoints',
+      body:'Customer data on laptops or hard drives is unencrypted in most SME environments. A stolen device = a notifiable data breach under POPIA and GDPR.',
+      fix:'Enable full-disk encryption on all devices. Implement a remote wipe policy.'
+    },
+    'POS/Payment': {
+      level:'med',
+      title:'POS / Payment system — Payment data scope',
+      body:'Payment systems store or process cardholder data. Even if you use a processor, your POS configuration may bring you into PCI-DSS scope unexpectedly.',
+      fix:'Confirm your PCI-DSS scope with your payment provider. Get a signed DPA.'
+    },
+    'Cloud DB': {
+      level:'med',
+      title:'Cloud database — Misconfiguration exposure',
+      body:'Misconfigured S3 buckets and Azure Blob containers have leaked millions of records. Public-read permissions are the most common misconfiguration.',
+      fix:'Audit bucket/container permissions. Enable access logging and alerts.'
+    }
+  };
+
+  /* ── Access-based risks ── */
+  if(S.access.indexOf('everyone')!==-1){
+    risks.push({
+      level:'high',
+      title:'Unrestricted data access — Whole team',
+      body:'All employees can access customer data. This violates the POPIA/GDPR principle of data minimisation — people should only access data they need for their role.',
+      fix:'Implement role-based access controls (RBAC). Document who has access to what.'
+    });
+  }
+  if(S.access.indexOf('third-party')!==-1){
+    risks.push({
+      level:'high',
+      title:'Third-party vendor access — Operator agreement required',
+      body:'Vendors or contractors with access to personal data are "operators" under POPIA and "processors" under GDPR. Without signed agreements, you are non-compliant.',
+      fix:'Get a signed Operator/Data Processing Agreement for every vendor with data access.'
+    });
+  }
+  if(S.access.indexOf('unsure')!==-1){
+    risks.push({
+      level:'high',
+      title:'Access visibility gap \u2014 You don\u2019t know who can see what',
+      body:'This is the most common SME compliance failure. Auditors want proof of control. "Not sure" is not an answer — it is evidence of non-compliance.',
+      fix:'Map your data flows and permissions before your next audit. Start with your top 3 data stores.'
+    });
+  }
+
+  /* ── Add storage risks from selections ── */
+  (S.storage||[]).forEach(function(store){
+    if(storageRisks[store]) risks.push(storageRisks[store]);
+  });
+
+  /* ── Data sensitivity risks ── */
+  if(S.data==='sensitive'){
+    risks.unshift({
+      level:'high',
+      title:'Sensitive data — Heightened obligations',
+      body:'Health, financial, or biometric data triggers special requirements: explicit consent, stricter breach timelines, and mandatory Data Protection Impact Assessments (DPIA) under GDPR/POPIA.',
+      fix:'Conduct a DPIA. Update your Privacy Policy to disclose sensitive data handling.'
+    });
+  }
+
+  /* ── No risks found ── */
+  if(!risks.length){
+    el.innerHTML='<div class="astrip ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>No major data exposure risks detected based on your selections. Good start.</span></div>';
+    return;
+  }
+
+  /* ── Sort: high first ── */
+  var order={high:0,med:1,low:2};
+  risks.sort(function(a,b){ return order[a.level]-order[b.level]; });
+
+  var icons = {
+    high:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    med: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    low: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+  };
+  var labels = {high:'High Risk', med:'Medium Risk', low:'Low Risk'};
+
+  el.innerHTML = risks.map(function(r){
+    return '<div class="risk-row '+r.level+'">'
+      +'<div class="risk-row-icon">'+icons[r.level]+'</div>'
+      +'<div class="risk-row-body">'
+      +'<div class="risk-row-title">'+r.title+'<span class="risk-pill '+r.level+'">'+labels[r.level]+'</span></div>'
+      +'<p>'+r.body+'</p>'
+      +'<div class="risk-row-fix"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>Fix: '+r.fix+'</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+/* ════ DOCUMENTS NEEDED LIST ════ */
+function buildDocsNeededList(){
+  var el = document.getElementById('docs-needed-list');
+  if(!el) return;
+
+  /* Map regulations to required documents */
+  var DOC_MAP = {
+    popia: [
+      {name:'Privacy Policy',          required:true},
+      {name:'PAIA Manual',             required:true},
+      {name:'Data Processing Agreement', required:true},
+      {name:'Data Retention Schedule', required:false},
+      {name:'Incident Response Procedure', required:false},
+      {name:'Employee Training Script', required:false},
+    ],
+    gdpr: [
+      {name:'Privacy Policy',          required:true},
+      {name:'Data Processing Agreement', required:true},
+      {name:'DSAR Procedure',          required:true},
+      {name:'DPIA',                    required:false},
+      {name:'Records of Processing Activities', required:false},
+    ],
+    ccpa: [
+      {name:'Privacy Policy',          required:true},
+      {name:'Consumer Request Form',   required:true},
+      {name:'Service Provider Agreement', required:true},
+      {name:'Data Breach Response Plan', required:false},
+    ],
+    hipaa: [
+      {name:'Business Associate Agreement', required:true},
+      {name:'Privacy Policy',          required:true},
+      {name:'Breach Notification Policy', required:true},
+      {name:'Employee Training Script', required:false},
+    ]
+  };
+
+  var seen = {};
+  var docs = [];
+  (S.regs||[]).forEach(function(reg){
+    var list = DOC_MAP[reg]||[];
+    list.forEach(function(d){
+      if(!seen[d.name]){
+        seen[d.name]=true;
+        docs.push({name:d.name, required:d.required, reg:reg.toUpperCase()});
+      }
+    });
+  });
+
+  if(!docs.length){
+    el.innerHTML='';
+    return;
+  }
+
+  var icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+
+  el.innerHTML = docs.map(function(d){
+    return '<div class="doc-row">'
+      +'<div class="doc-row-icon">'+icon+'</div>'
+      +'<span class="doc-row-name">'+d.name+'</span>'
+      +'<span class="doc-row-reg">'+d.reg+'</span>'
+      +(d.required ? '<span class="doc-row-required">Required</span>' : '')
+      +'</div>';
+  }).join('');
+}
+
+/* ── Also add .astrip.ok style ── */
 /* ════ FREE PLAN BAR ════ */
 function getThisMonthCount(){
   try{
@@ -3236,7 +3571,7 @@ if(el_btn_another) el_btn_another.addEventListener('click', function(){
     // TESTING MODE TOGGLE
     // ======================
     // Set to true for unlimited testing, false for production
-    const TESTING_MODE = false;  // ← CHANGE TO false BEFORE GOING LIVE!
+    const TESTING_MODE = true;  // ← CHANGE TO false BEFORE GOING LIVE!
 
     // ======================
     // COLLAPSIBLE SECTIONS HANDLER (NEW)
